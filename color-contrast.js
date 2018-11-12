@@ -84,6 +84,7 @@ $('*:visible').each(function() {
 		}
 
 		// highlight the element in the DOM and log the element, contrast ratio and failure
+		// for testing in console
 		if(ratingString == 'fail') {
 			var tag = htmlTag;
 			$this.css('box-shadow', '0px 0px 0px 3px rgba(250,13,5,1)');
