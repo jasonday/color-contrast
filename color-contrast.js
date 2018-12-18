@@ -130,7 +130,8 @@ var contrast = {
                     // for testing in console
                     if (failed) {
                         elem.style.boxShadow = '0px 0px 0px 3px rgba(250,13,5,1)';
-                        console.log(path + "\n" + ratioText + ", " + fontSizeString + ", " + ratingString);
+                        console.dir(elem);
+                        console.log(ratioText + ", " + fontSizeString + ", " + ratingString);console.log(path + "\n" + ratioText + ", " + fontSizeString + ", " + ratingString);
                     }
                 }
             })(i);
