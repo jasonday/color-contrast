@@ -131,8 +131,7 @@ var contrast = {
                     if (failed) {
                         elem.style.boxShadow = '0px 0px 0px 3px rgba(250,13,5,1)';
                         console.dir(elem);
-                        console.log(ratioText + ", " + fontSizeString + ", " + ratingString);console.log(path + "\n" + ratioText + ", " + fontSizeString + ", " + ratingString);
-                    }
+                        console.log(ratioText + ", " + fontSizeString + ", " + ratingString);
                 }
             })(i);
         }        
