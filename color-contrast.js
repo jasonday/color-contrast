@@ -37,11 +37,9 @@ var relativeLuminance = function (c) {
 // Based on http://jsfiddle.net/Y4uDL/
 var getBackground = function (el) {
 
-    var styles = getComputedStyle(el);
-    //var bgColor = el.css('background-color');
-    var bgColor = styles.backgroundColor;
-    //var bgImage = el.css('background-image');
-    var bgImage = styles.backgroundImage;
+    var styles = getComputedStyle(el),
+        bgColor = styles.backgroundColor,
+        bgImage = styles.backgroundImage;
 
     if (bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent' && bgImage === "none") {
         return bgColor;
@@ -58,26 +56,27 @@ var getBackground = function (el) {
 
 // check visibility - based on jQuery method
 var isVisible = function (el) {
-    return !!( el.offsetWidth || el.offsetHeight || el.getClientRects().length );
+    return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
 }
 
 // get xpath
 var getPathTo = function (el) {
-    if (el.id!=='')
-        return 'id("'+ el.id +'")';
+    if (el.id !== '')
+        return 'id("' + el.id + '")';
     if (el === document.body)
         return el.tagName;
 
-    var ix= 0;
-    var siblings= el.parentNode.childNodes;
-    for (var i= 0; i<siblings.length; i++) {
-        var sibling= siblings[i];
+    var ix = 0;
+    var siblings = el.parentNode.childNodes;
+    for (var i = 0; i < siblings.length; i++) {
+        var sibling = siblings[i];
         if (sibling === el)
-            return getPathTo(el.parentNode)+'/'+ el.tagName +'['+(ix+1)+']';
-        if (sibling.nodeType===1 && sibling.tagName === el.tagName)
+            return getPathTo(el.parentNode) + '/' + el.tagName + '[' + (ix + 1) + ']';
+        if (sibling.nodeType === 1 && sibling.tagName === el.tagName)
             ix++;
     }
 }
+
 
 var elements = document.querySelectorAll('*');
 for (var i = 0; i < elements.length; i++) {
@@ -89,17 +88,20 @@ for (var i = 0; i < elements.length; i++) {
                 style = getComputedStyle(elem),
                 color = style.color,
                 background = getBackground(elem),
-                textString = [].reduce.call(elem.childNodes, function(a, b) { return a + (b.nodeType === 3 ? b.textContent : ''); }, ''),
+                textString = [].reduce.call(elem.childNodes, function (a, b) {
+                    return a + (b.nodeType === 3 ? b.textContent : '');
+                }, ''),
                 text = textString.trim(),
                 ratingString,
                 fontSizeString,
                 failed;
 
-            if(text.length){
+            // check if node has text
+            if (text.length) {
                 // does element have a background image - needs to be manually reviewed
                 if (background === "image") {
                     ratingString = "Needs manual review";
-                    fontSizeString = "N/A"
+                    fontSizeString = "N/A";
                     failed = true;
                 } else {
                     var ratio = Math.round(contrastRatio(color, background) * 100) / 100,
@@ -128,6 +130,7 @@ for (var i = 0; i < elements.length; i++) {
                     }
                 }
             }
+
 
             // highlight the element in the DOM and log the element, contrast ratio and failure
             // for testing in console
