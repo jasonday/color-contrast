@@ -54,23 +54,6 @@ var contrast = {
     isVisible: function (el) {
         return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
     },
-    // get xpath
-    getPathTo: function (el) {
-        if (el.id !== '')
-            return 'id("' + el.id + '")';
-        if (el === document.body)
-            return el.tagName;
-
-        var ix = 0;
-        var siblings = el.parentNode.childNodes;
-        for (var i = 0; i < siblings.length; i++) {
-            var sibling = siblings[i];
-            if (sibling === el)
-                return contrast.getPathTo(el.parentNode) + '/' + el.tagName + '[' + (ix + 1) + ']';
-            if (sibling.nodeType === 1 && sibling.tagName === el.tagName)
-                ix++;
-        }
-    },
     check: function () {
         var elements = document.querySelectorAll('*');
         for (var i = 0; i < elements.length; i++) {
@@ -78,8 +61,7 @@ var contrast = {
                 var elem = elements[n];
                 // test if visible
                 if (contrast.isVisible(elem)) {
-                    var path = contrast.getPathTo(elem),
-                        style = getComputedStyle(elem),
+                    var style = getComputedStyle(elem),
                         color = style.color,
                         background = contrast.getBackground(elem),
                         textString = [].reduce.call(elem.childNodes, function (a, b) {
