@@ -59,7 +59,7 @@ $('*:visible').each(function () {
         fill = $this.css('fill'),
         background = getBackground($this),
         htmlTag = $this[0].tagName,
-        textCheck = $this.clone().children().remove().end().html(),
+        textCheck = $this.clone().children().remove().end().text(),
         ratingString,
         fontSizeString,
         failed;
@@ -97,23 +97,15 @@ $('*:visible').each(function () {
                     failed = false;
                 }
             }
-
-
         }
     }
 
     // highlight the element in the DOM and log the element, contrast ratio and failure
     // for testing in console
     if (failed) {
-        var tag = htmlTag;
         $this.css('box-shadow', '0px 0px 0px 3px rgba(250,13,5,1)');
-        if ($this[0].id) {
-            tag = tag + '#' + $this[0].id;
-        }
-        if ($this[0].className) {
-            tag = tag + "." + $this[0].className;
-        }
-
-        console.log(tag + "\n" + ratioText + ", " + fontSizeString + ", " + ratingString);
+        
+        console.dirxml($this);
+        console.log(ratioText + ", " + fontSizeString + ", " + ratingString);
     }
 });
