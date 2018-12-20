@@ -92,20 +92,21 @@
                         </div>
                 </div>
             </div> <!-- end eight columns -->
-        </div>
-        <div class="four columns">
-            <div class="box row">
-                <h2>Output</h2>
-                <button id="check-contrast">Check contrast</button>
-                <div class="errors">
-                    <h3>Errors</h3>
+            <div class="four columns">
+                    <div class="box row">
+                        <h2>Output</h2>
+                        <button id="check-contrast">Check contrast</button>
+                        <div class="errors">
+                            <h3>Errors</h3>
+                        </div>
+                        <div class="warnings">
+                            <h3>Warnings</h3>
+                        </div>
+                    </div>
+        
                 </div>
-                <div class="warnings">
-                    <h3>Warnings</h3>
-                </div>
-            </div>
-
         </div>
+        
     </main>
     
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
@@ -121,7 +122,7 @@
                 $('#errors').append('<ul></ul>').append(
                     `<li>${element}
                         <ul>
-                            <li>${ratios}</li>
+                            <li>${ratio}</li>
                             <li>${detail}</li>
                             <li>${status}</li>                        
                         </ul>
@@ -136,7 +137,7 @@
                 $('#warnings').append('<ul></ul>').append(
                     `<li>${element}
                         <ul>
-                            <li>${ratios}</li>
+                            <li>${ratio}</li>
                             <li>${detail}</li>
                             <li>${status}</li>                        
                         </ul>
