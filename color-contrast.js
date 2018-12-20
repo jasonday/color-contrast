@@ -1,3 +1,7 @@
+var contrastErrors = {
+    errors: [],
+    warnings: []
+};
 var contrast = {
     // Parse rgb(r, g, b) and rgba(r, g, b, a) strings into an array.
     // Adapted from https://github.com/gka/chroma.js
@@ -63,6 +67,8 @@ var contrast = {
                 if (contrast.isVisible(elem)) {
                     var style = getComputedStyle(elem),
                         color = style.color,
+                        fill = style.fill,
+                        htmlTag = elem.tagName,
                         background = contrast.getBackground(elem),
                         textString = [].reduce.call(elem.childNodes, function (a, b) {
                             return a + (b.nodeType === 3 ? b.textContent : '');
@@ -71,9 +77,16 @@ var contrast = {
                         ratingString,
                         fontSizeString,
                         failed;
-        
-                    // check if node has text
-                    if (text.length) {
+
+                    if (htmlTag === "svg") {
+                       var  ratio = Math.round(contrast.contrastRatio(fill, background) * 100) / 100,
+                            ratioText = ratio + ':1';
+                        if(ratio < 3) {
+                            failed="true";
+                            fontSizeString = "svg fill";
+                            ratingString = "fail"
+                        }
+                    } else if (text.length) {
                         // does element have a background image - needs to be manually reviewed
                         if (background === "image") {
                             ratingString = "Needs manual review";
@@ -111,11 +124,22 @@ var contrast = {
                     // highlight the element in the DOM and log the element, contrast ratio and failure
                     // for testing in console
                     if (failed) {
-                        elem.style.boxShadow = '0px 0px 0px 3px rgba(250,13,5,1)';
-                        console.dirxml(elem);
-                        console.log(ratioText + ", " + fontSizeString + ", " + ratingString);
+                        var error = {};
+                        error = {
+                            name: elem,
+                            ratio: ratioText,
+                            detail: fontSizeString,
+                            status: ratingString
+                        }
+                        if(ratingString === "fail"){
+                            contrastErrors.errors.push(error);
+                        } else if (ratingString === "Needs manual review"){
+                            contrastErrors.warnings.push(error);
+                        }
+                    }
                 }
             })(i);
         }        
+        return contrastErrors;
     }
 }

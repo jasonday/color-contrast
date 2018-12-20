@@ -1,0 +1,103 @@
+<!doctype html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <title>Color Contrast test page</title>
+  <meta name="description" content="Color Contrast test page">
+  <meta name="author" content="@jasonday">
+  <link rel="stylesheet" href="style.css">
+
+</head>
+
+<body>
+    <main class="container">
+        <div class="row">
+            <div class="twelve columns">
+                    <h1>Color contrast test page</h1>
+                    <p>A series of elements with various contrast failures</p>
+                    <hr>
+            </div>
+        </div>
+        <div class="row">
+            <div class="eight columns">
+                
+                <h2>Text</h2>
+                <h3>Small text</h3>
+                <div class="example">
+                    <p class="small light">Small text does not have a contrast ratio of at least 4.5:1</p>
+                </div>
+                <h3>Large text</h3>
+                <div class="example">
+                    <div class="large extra-light">Large text does not have a contrast ratio of at least 3:1</div>
+                </div>
+                <h3>Bold text</h3>
+                <div class="example">
+                    <div class="bold small extra-light">Bold text does not have a contrast ratio of at least 3:1</div>
+                </div>
+                <h3>List links</h3>
+                <div class="example">
+                    <ul>
+                        <li>
+                            <a href="#" class="light">Item 1</a>
+                        </li>
+                        <li>
+                            <a href="#" class="black">Item 1</a>
+                        </li>
+                        <li>
+                            <a href="#" class="light">Item 1</a>
+                        </li>
+                    </ul>
+                </div>
+                <h3>Inline text</h3>
+                <div class="example">
+                    <p>An example of failure<span class="light"> in inline text</span></p>
+                </div>
+                <h3>Text on background image</h3>
+                <div class="example">
+                    <p class="background-image white">Text on background image requires manual review</p>
+                </div>
+                <h3>Text on linear gradient</h3>
+                <div class="example">
+                    <button class="linear-gradient medium">Text on linear gradient requires manual review</button>
+                    <div>Note: Automated testing against color values in linear gradient may be possible</div>
+                </div>
+                <hr>
+                <h2>Forms</h2>
+                <h3>Various inputs</h3>
+                <div class="example">
+                    <div class="row">
+                        <label for="input1">Input with low contrast text color</label>
+                        <input id="input1" class="light" type="text"/>
+                    </div>
+                    <div class="row">
+                            <label for="select1">Select with low contrast text color</label>
+                            <select id="select1" class="light">
+                                <option>red</option>
+                                <option>blue</option>
+                                <option>yellow</option>
+                            </select>
+                    </div>
+                    <div class="row">
+                            <label for="textarea1">Textarea with low contrast text color</label>
+                            <textarea id="textarea1" class="light">Low contrast text</textarea>
+                    </div>
+                    <div class="row">
+                        <label for="checkbox1" class="light"><input type="checkbox" id="checkbox1">Checkbox with low contrast label color</label>      
+                    </div>
+                    <div class="row">
+                            <label for="input2">Input with low contrast placeholder text</label>
+                            <input type="text" id="input2" class="light" placeholder="placeholder text"/>
+                        </div>
+                </div>
+            </div> <!-- end eight columns -->
+        </div>
+        <div class="four columns">
+
+        </div>
+    </main>
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</body>
+</html>
