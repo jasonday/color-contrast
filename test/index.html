@@ -111,37 +111,41 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../jquery.color-contrast.js"></script>
     <script>
-        contrast.check();
 
-        $.each(contrastErrors.errors, (index, item) => {
-            var element = item.name.context;
-            $(element).css('box-shadow', '0px 0px 0px 3px rgba(250,13,5,1)');
-            $('#errors').append('<ul></ul>').append(
-                `<li>${element}
-                    <ul>
-                        <li>${ratios}</li>
-                        <li>${detail}</li>
-                        <li>${status}</li>                        
-                    </ul>
-                </li>
-                `
-            );
-        });
+        $('#check-contrast').on('click', function(){
+            contrast.check();
 
-        $.each(contrastErrors.warnings, (index, item) => {
-            var element = item.name.context;
-            $(element).css('box-shadow', '0px 0px 0px 3px rgba(230, 126, 34, 1)');
-            $('#warnings').append('<ul></ul>').append(
-                `<li>${element}
-                    <ul>
-                        <li>${ratios}</li>
-                        <li>${detail}</li>
-                        <li>${status}</li>                        
-                    </ul>
-                </li>
-                `
-            );
+            $.each(contrastErrors.errors, (index, item) => {
+                var element = item.name.context;
+                $(element).css('box-shadow', '0px 0px 0px 3px rgba(250,13,5,1)');
+                $('#errors').append('<ul></ul>').append(
+                    `<li>${element}
+                        <ul>
+                            <li>${ratios}</li>
+                            <li>${detail}</li>
+                            <li>${status}</li>                        
+                        </ul>
+                    </li>
+                    `
+                );
+            });
+
+            $.each(contrastErrors.warnings, (index, item) => {
+                var element = item.name.context;
+                $(element).css('box-shadow', '0px 0px 0px 3px rgba(230, 126, 34, 1)');
+                $('#warnings').append('<ul></ul>').append(
+                    `<li>${element}
+                        <ul>
+                            <li>${ratios}</li>
+                            <li>${detail}</li>
+                            <li>${status}</li>                        
+                        </ul>
+                    </li>
+                    `
+                );
+            });
         });
+        
     </script>
 </body>
 </html>
