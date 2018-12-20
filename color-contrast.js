@@ -95,7 +95,7 @@ var contrast = {
                         } else {
                             var ratio = Math.round(contrast.contrastRatio(color, background) * 100) / 100,
                                 ratioText = ratio + ':1',
-                                fontSize = parseInt(style.fontSize) * 3 / 4, // http://www.w3.org/TR/CSS2/syndata.html#length-units
+                                fontSize = parseInt(style.fontSize), 
                                 fontWeight = style.fontWeight;
         
                             if (fontSize >= 18 || fontSize >= 14 && fontWeight >= 700) {

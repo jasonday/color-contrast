@@ -84,10 +84,11 @@ var contrast = {
                 } else {
                     var ratio = Math.round(contrast.contrastRatio(color, background) * 100) / 100,
                         ratioText = ratio + ':1',
-                        fontSize = parseInt($this.css('fontSize')) * 3 / 4, // http://www.w3.org/TR/CSS2/syndata.html#length-units
+                        fontSize = parseInt($this.css('fontSize')),
                         fontWeight = $this.css('fontWeight');
+                        console.log(fontSize);
 
-                    if (fontSize >= 18 || fontSize >= 14 && fontWeight >= 700) {
+                    if (fontSize >= 18 || (fontSize >= 14 && fontWeight >= 700)) {
                         fontSizeString = 'large scale text'
                         if (ratio < 3) {
                             ratingString = 'fail';

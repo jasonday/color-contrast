@@ -44,10 +44,10 @@
                             <a href="#" class="light">Item 1</a>
                         </li>
                         <li>
-                            <a href="#" class="black">Item 1</a>
+                            <a href="#" class="black">Item 2</a>
                         </li>
                         <li>
-                            <a href="#" class="light">Item 1</a>
+                            <a href="#" class="light">Item 3</a>
                         </li>
                     </ul>
                 </div>
@@ -98,12 +98,10 @@
                 <div class="box row">
                     <h2>Output</h2>
                     <button id="check-contrast">Check contrast</button>
-                    <div class="errors">
-                        <h3>Errors</h3>
-                    </div>
-                    <div class="warnings">
-                        <h3>Warnings</h3>
-                    </div>
+                    <br>
+                    <hr>
+                    <div class="errors"></div>
+                    <div class="warnings"></div>
                 </div>
 
             </div>
@@ -117,33 +115,26 @@
         $('#check-contrast').on('click', function () {
             contrast.check();
 
+            $('div.errors').append('<h3 class="error-highlight">Errors</h3>');
+            $('div.warnings').append('<h3 class="warning-highlight">Warnings</h3>')
+            $('div.errors, div.warnings').append('<ol></ol>');
+            console.log(contrastErrors);
+
             $.each(contrastErrors.errors, (index, item) => {
-                var element = item.name.context;
-                $(element).css('box-shadow', '0px 0px 0px 3px rgba(250,13,5,1)');
-                $('#errors').append('<ul></ul>').append(
-                    `<li>${element}
-                        <ul>
-                            <li>${item.ratio}</li>
-                            <li>${item.detail}</li>
-                            <li>${item.status}</li>                        
-                        </ul>
-                    </li>
-                    `
+                var name = item.name
+                    count = index + 1;
+                $(name).addClass('error-highlight').append(' (' + count + ')');
+                $('div.errors ol').append(
+                    `<li>${name[0].nodeName}, ${item.ratio}, ${item.detail}, ${item.status}</li>`
                 );
             });
 
             $.each(contrastErrors.warnings, (index, item) => {
-                var element = item.name.context;
-                $(element).css('box-shadow', '0px 0px 0px 3px rgba(230, 126, 34, 1)');
-                $('#warnings').append('<ul></ul>').append(
-                    `<li>${element}
-                        <ul>
-                            <li>${item.ratio}</li>
-                            <li>${item.detail}</li>
-                            <li>${item.status}</li>                        
-                        </ul>
-                    </li>
-                    `
+                var name = item.name,
+                    count = index + 1;
+                $(name).addClass('warning-highlight').append(' (' + count + ')');
+                $('div.warnings ol').append(
+                    `<li>${name[0].nodeName}, ${item.ratio}, ${item.detail}, ${item.status}</li>`
                 );
             });
         });

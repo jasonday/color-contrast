@@ -243,3 +243,13 @@ input[type=text], select, textarea {
     background: linear-gradient(to bottom, #ffffff 0%,#f1f1f1 50%,#e1e1e1 51%,#f6f6f6 100%);
     border-radius: 5px;
 }
+
+.error-highlight {
+    outline: 3px dashed rgba(250,13,5,1);
+    outline-offset: 3px;
+}
+
+.warning-highlight {
+    outline: 3px dotted rgba(230, 126, 34, 1);
+    outline-offset: 3px;
+}
