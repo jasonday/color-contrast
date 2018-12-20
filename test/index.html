@@ -1,13 +1,14 @@
 <!doctype html>
 
 <html lang="en">
-<head>
-  <meta charset="utf-8">
 
-  <title>Color Contrast test page</title>
-  <meta name="description" content="Color Contrast test page">
-  <meta name="author" content="@jasonday">
-  <link rel="stylesheet" href="style.css">
+<head>
+    <meta charset="utf-8">
+
+    <title>Color Contrast test page</title>
+    <meta name="description" content="Color Contrast test page">
+    <meta name="author" content="@jasonday">
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -15,14 +16,14 @@
     <main class="container">
         <div class="row">
             <div class="twelve columns">
-                    <h1>Color contrast test page</h1>
-                    <p>A series of elements with various contrast failures</p>
-                    <hr>
+                <h1>Color contrast test page</h1>
+                <p>A series of elements with various contrast failures</p>
+                <hr>
             </div>
         </div>
         <div class="row">
             <div class="eight columns">
-                
+
                 <h2>Text</h2>
                 <h3>Small text</h3>
                 <div class="example">
@@ -69,51 +70,51 @@
                 <div class="example">
                     <div class="row">
                         <label for="input1">Input with low contrast text color</label>
-                        <input id="input1" class="light" type="text"/>
+                        <input id="input1" class="light" type="text" />
                     </div>
                     <div class="row">
-                            <label for="select1">Select with low contrast text color</label>
-                            <select id="select1" class="light">
-                                <option>red</option>
-                                <option>blue</option>
-                                <option>yellow</option>
-                            </select>
+                        <label for="select1">Select with low contrast text color</label>
+                        <select id="select1" class="light">
+                            <option>red</option>
+                            <option>blue</option>
+                            <option>yellow</option>
+                        </select>
                     </div>
                     <div class="row">
-                            <label for="textarea1">Textarea with low contrast text color</label>
-                            <textarea id="textarea1" class="light">Low contrast text</textarea>
+                        <label for="textarea1">Textarea with low contrast text color</label>
+                        <textarea id="textarea1" class="light">Low contrast text</textarea>
                     </div>
                     <div class="row">
-                        <label for="checkbox1" class="light"><input type="checkbox" id="checkbox1">Checkbox with low contrast label color</label>      
+                        <label for="checkbox1" class="light"><input type="checkbox" id="checkbox1">Checkbox with low
+                            contrast label color</label>
                     </div>
                     <div class="row">
-                            <label for="input2">Input with low contrast placeholder text</label>
-                            <input type="text" id="input2" class="light" placeholder="placeholder text"/>
-                        </div>
+                        <label for="input2">Input with low contrast placeholder text</label>
+                        <input type="text" id="input2" class="light" placeholder="placeholder text" />
+                    </div>
                 </div>
             </div> <!-- end eight columns -->
             <div class="four columns">
-                    <div class="box row">
-                        <h2>Output</h2>
-                        <button id="check-contrast">Check contrast</button>
-                        <div class="errors">
-                            <h3>Errors</h3>
-                        </div>
-                        <div class="warnings">
-                            <h3>Warnings</h3>
-                        </div>
+                <div class="box row">
+                    <h2>Output</h2>
+                    <button id="check-contrast">Check contrast</button>
+                    <div class="errors">
+                        <h3>Errors</h3>
                     </div>
-        
+                    <div class="warnings">
+                        <h3>Warnings</h3>
+                    </div>
                 </div>
+
+            </div>
         </div>
-        
+
     </main>
-    
+
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="../jquery.color-contrast.js"></script>
     <script>
-
-        $('#check-contrast').on('click', function(){
+        $('#check-contrast').on('click', function () {
             contrast.check();
 
             $.each(contrastErrors.errors, (index, item) => {
@@ -122,9 +123,9 @@
                 $('#errors').append('<ul></ul>').append(
                     `<li>${element}
                         <ul>
-                            <li>${ratio}</li>
-                            <li>${detail}</li>
-                            <li>${status}</li>                        
+                            <li>${item.ratio}</li>
+                            <li>${item.detail}</li>
+                            <li>${item.status}</li>                        
                         </ul>
                     </li>
                     `
@@ -137,16 +138,16 @@
                 $('#warnings').append('<ul></ul>').append(
                     `<li>${element}
                         <ul>
-                            <li>${ratio}</li>
-                            <li>${detail}</li>
-                            <li>${status}</li>                        
+                            <li>${item.ratio}</li>
+                            <li>${item.detail}</li>
+                            <li>${item.status}</li>                        
                         </ul>
                     </li>
                     `
                 );
             });
         });
-        
     </script>
 </body>
+
 </html>
