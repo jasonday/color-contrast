@@ -86,7 +86,6 @@ var contrast = {
                         ratioText = ratio + ':1',
                         fontSize = parseInt($this.css('fontSize')),
                         fontWeight = $this.css('fontWeight');
-                        console.log(fontSize);
 
                     if (fontSize >= 18 || (fontSize >= 14 && fontWeight >= 700)) {
                         fontSizeString = 'large scale text'
