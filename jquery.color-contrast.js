@@ -65,16 +65,16 @@ var contrast = {
                 fontSizeString,
                 failed;
 
-            if (htmlTag === "svg") {
+            if (htmlTag === "SVG") {
                 var fill = $this.css('fill'),
                     ratio = Math.round(contrast.contrastRatio(fill, background) * 100) / 100,
                     ratioText = ratio + ':1';
                 if(ratio < 3) {
-                    failed="true";
+                    failed = true;
                     fontSizeString = "svg fill";
                     ratingString = "fail"
                 }
-            } else if ($.trim(textCheck).length) {
+            } else if ($.trim(textCheck).length || htmlTag === "INPUT" || htmlTag === "SELECT" || htmlTag === "TEXTAREA") {
                 // does element have a background image - needs to be manually reviewed
                 if (background === "image") {
                     var ratioText =  "unknown";
@@ -113,7 +113,6 @@ var contrast = {
             // for testing in console
             if (failed) {
                 var error = {};
-                //$this.css('box-shadow', '0px 0px 0px 3px rgba(250,13,5,1)');
                 error = {
                     name: $this,
                     ratio: ratioText,
