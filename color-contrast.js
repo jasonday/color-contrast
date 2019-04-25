@@ -19,13 +19,9 @@ var contrast = {
                 rgb[i] = +rgb[i];
             }
         }
+        //console.log(rgb);
         return rgb;
-    },
-    // Based on http://www.w3.org/TR/WCAG20/#contrast-ratiodef
-    contrastRatio: function (x, y) {
-        var l1 = contrast.relativeLuminance(contrast.parseRgb(x));
-        var l2 = contrast.relativeLuminance(contrast.parseRgb(y));
-        return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+        
     },
     // Based on http://www.w3.org/TR/WCAG20/#relativeluminancedef
     relativeLuminance: function (c) {
@@ -34,20 +30,36 @@ var contrast = {
             var v = c[i] / 255;
             lum.push(v < 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4));
         }
-        return 0.2126 * lum[0] + 0.7152 * lum[1] + 0.0722 * lum[2];
+        return (0.2126 * lum[0]) + (0.7152 * lum[1]) + (0.0722 * lum[2]);
     },
+    // Based on http://www.w3.org/TR/WCAG20/#contrast-ratiodef
+    contrastRatio: function (x, y) {
+        var l1 = contrast.relativeLuminance(contrast.parseRgb(x));
+        var l2 = contrast.relativeLuminance(contrast.parseRgb(y));
+        return (Math.max(l1, l2) + 0.05) / (Math.min(l1, l2) + 0.05);
+    },
+    
     getBackground: function (el) {
 
         var styles = getComputedStyle(el),
             bgColor = styles.backgroundColor,
             bgImage = styles.backgroundImage;
-
-        if (bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent' && bgImage === "none") {
+            rgb = contrast.parseRgb(bgColor) + '',
+            alpha = rgb.split(',');
+        
+        // if background has alpha transparency, flag manual check
+        if(alpha[3] < 1 && alpha[3] > 0) {
+            return "alpha";
+        }
+        
+        // if element has no background image, or transparent background (alpha == 0) return bgColor
+        if (bgColor !== 'rgba(0, 0, 0, 0)' && bgColor !== 'transparent' && bgImage === "none" && alpha[3] !== '0') {
             return bgColor;
         } else if (bgImage !== "none") {
             return "image";
         }
-
+        
+        // retest if not returned above
         if (el.tagName === 'HTML') {
             return 'rgb(255, 255, 255)';
         } else {
@@ -68,73 +80,71 @@ var contrast = {
                     var style = getComputedStyle(elem),
                         color = style.color,
                         fill = style.fill,
+                        fontSize = parseInt(style.fontSize),
+                        pointSize = fontSize * 3/4,
+                        fontWeight = style.fontWeight,
                         htmlTag = elem.tagName,
                         background = contrast.getBackground(elem),
                         textString = [].reduce.call(elem.childNodes, function (a, b) {
                             return a + (b.nodeType === 3 ? b.textContent : '');
                         }, ''),
                         text = textString.trim(),
-                        ratingString,
-                        fontSizeString,
-                        failed;
+                        ratio,
+                        error,
+                        warning;
 
-                    if (htmlTag === "svg") {
-                       var  ratio = Math.round(contrast.contrastRatio(fill, background) * 100) / 100,
-                            ratioText = ratio + ':1';
+                    if (htmlTag === "SVG") {
+                        ratio = Math.round(contrast.contrastRatio(fill, background) * 100) / 100;
                         if(ratio < 3) {
-                            failed="true";
-                            fontSizeString = "svg fill";
-                            ratingString = "fail"
+                            error = {
+                                elem: elem,
+                                ratio: ratio + ':1',
+                                detail: "",
+                                info: "SVG elements must have a minimum contrast ratio of 3:1"
+                            }
+                            contrastErrors.errors.push(error);
                         }
-                    } else if (text.length) {
+                    } else if (text.length || htmlTag === "INPUT" || htmlTag === "SELECT" || htmlTag === "TEXTAREA") {
                         // does element have a background image - needs to be manually reviewed
                         if (background === "image") {
-                            ratingString = "Needs manual review";
-                            fontSizeString = "N/A";
-                            failed = true;
+                            warning = {
+                                elem: elem,
+                                ratio: 'unknown',
+                                detail: "",
+                                info: "Contrast of text against background images must be checked manually"
+                            }
+                            contrastErrors.warnings.push(warning)
+                        } else if(background === "alpha"){
+                            warning = {
+                                elem: elem,
+                                ratio: 'unknown',
+                                detail: "",
+                                info: "Contrast of text against an alpha transparency background must be checked manually"
+                            }
+                            contrastErrors.warnings.push(warning)
                         } else {
-                            var ratio = Math.round(contrast.contrastRatio(color, background) * 100) / 100,
-                                ratioText = ratio + ':1',
-                                fontSize = parseInt(style.fontSize), 
-                                fontWeight = style.fontWeight;
-        
-                            if (fontSize >= 18 || fontSize >= 14 && fontWeight >= 700) {
-                                fontSizeString = 'large scale text'
+                            ratio = Math.round(contrast.contrastRatio(color, background) * 100) / 100;
+                            if (pointSize >= 18 || (pointSize >= 14 && fontWeight >= 700)) {
                                 if (ratio < 3) {
-                                    ratingString = 'fail';
-                                    failed = true;
-                                } else {
-                                    ratingString = 'pass';
-                                    failed = false;
+                                    error = {
+                                        elem: elem,
+                                        ratio: ratio + ':1',
+                                        detail: fontSize + "px " + fontWeight,
+                                        info: "Large scale text (greater than 18pt/24px or 14pt/18.667px bold) must have a minimum contrast ratio of 3:1"
+                                    }
+                                    contrastErrors.errors.push(error);
                                 }
                             } else {
-                                fontSizeString = 'normal body text'
                                 if (ratio < 4.5) {
-                                    ratingString = 'fail';
-                                    failed = true;
-                                } else {
-                                    ratingString = 'pass';
-                                    failed = false;
+                                    error = {
+                                        elem: elem,
+                                        ratio: ratio + ':1',
+                                        detail: fontSize + "px " + fontWeight,
+                                        info: "Normal body text (less than 18pt/24px or 14pt/18.667px bold) must have a minimum contrast ratio of 4.5:1"
+                                    }
+                                    contrastErrors.errors.push(error);
                                 }
                             }
-                        }
-                    }
-        
-        
-                    // highlight the element in the DOM and log the element, contrast ratio and failure
-                    // for testing in console
-                    if (failed) {
-                        var error = {};
-                        error = {
-                            name: elem,
-                            ratio: ratioText,
-                            detail: fontSizeString,
-                            status: ratingString
-                        }
-                        if(ratingString === "fail"){
-                            contrastErrors.errors.push(error);
-                        } else if (ratingString === "Needs manual review"){
-                            contrastErrors.warnings.push(error);
                         }
                     }
                 }
