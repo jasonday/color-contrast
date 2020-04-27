@@ -40,10 +40,9 @@ var contrast = {
     },
     
     getBackground: function (el) {
-
         var styles = getComputedStyle(el),
             bgColor = styles.backgroundColor,
-            bgImage = styles.backgroundImage;
+            bgImage = styles.backgroundImage,
             rgb = contrast.parseRgb(bgColor) + '',
             alpha = rgb.split(',');
         
@@ -71,6 +70,11 @@ var contrast = {
         return !!(el.offsetWidth || el.offsetHeight || el.getClientRects().length);
     },
     check: function () {
+        // resets results
+        contrastErrors = {
+            errors: [],
+            warnings: []
+        };
         var elements = document.querySelectorAll('*');
         for (var i = 0; i < elements.length; i++) {
             (function (n) {
